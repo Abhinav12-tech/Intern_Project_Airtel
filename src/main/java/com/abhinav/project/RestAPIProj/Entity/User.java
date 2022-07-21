@@ -1,5 +1,9 @@
 package com.abhinav.project.RestAPIProj.Entity;
 
+import com.abhinav.project.RestAPIProj.Config.AesEncryptor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -21,6 +25,7 @@ public class User {
     @NotNull
     @Pattern(regexp = "^(?=.*\\d)+(?=.*[a-z])(?=.*[A-Z])+(?=.*[@#$%^&+=]).{8,20}$",
             message = "Should have 1 lower, 1 upper, 1 number, 1 spl char (b/w 8-20 char)")
+    @Convert(converter = AesEncryptor.class)
     @Column(name = "Password ")
     private String password;
 
