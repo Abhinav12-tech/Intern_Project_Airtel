@@ -1,6 +1,9 @@
 package com.abhinav.project.RestAPIProj.Entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -10,9 +13,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @NotNull
+    @Size(min = 2, message = "Name should have at least 2 characters")
     @Column(name = "Name")
     private String name;
 
+    @NotNull
+    @Pattern(regexp = "^(?=.*\\d)+(?=.*[a-z])(?=.*[A-Z])+(?=.*[@#$%^&+=]).{8,20}$",
+            message = "Should have 1 lower, 1 upper, 1 number, 1 spl char (b/w 8-20 char)")
     @Column(name = "Password ")
     private String password;
 

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -28,12 +29,11 @@ public class UserController {
     }
 
     @PostMapping
-    public User createUser(@RequestBody User user){
+    public User createUser(@Valid @RequestBody User user){
         return this.userRepository.save(user);
     }
-
     @PutMapping("/{id}")
-    public User updateUser(@RequestBody User user, @PathVariable("id") long userId){
+    public User updateUser(@Valid @RequestBody User user, @PathVariable("id") long userId){
         User existingUser = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: "+ userId));
         existingUser.setName(user.getName());
