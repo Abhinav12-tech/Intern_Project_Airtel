@@ -43,10 +43,17 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUser(@PathVariable("id") long userId){
+    public String deleteUser(@PathVariable("id") long userId){
+        User existingUser = this.userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with id: "+ userId));
+        this.userRepository.delete(existingUser);
+        return "User Deleted Successfully with id "+userId;
+    }
+
+    /*public ResponseEntity<User> deleteUser(@PathVariable("id") long userId){
         User existingUser = this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User not found with id: "+ userId));
         this.userRepository.delete(existingUser);
         return ResponseEntity.ok().build();
-    }
+    }*/
 }
