@@ -8,8 +8,21 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -17,8 +30,14 @@ import static org.mockito.Mockito.when;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class RestApiProjApplicationTests {
+
+    @LocalServerPort
+    private int port;
+
+    @Autowired
+    private TestRestTemplate testRestTemplate;
 
     @Autowired
     private UserController controller;
@@ -48,6 +67,49 @@ class RestApiProjApplicationTests {
         user.setPassword("MountSM%2018");
 
         repository.save(user);
+    }
+
+    public ResponseEntity<String> doRestCall(String url, MultiValueMap<String,String> queryParam,
+                                             Map<String,String> pathParam,String body,
+                                             MultiValueMap<String,String> header,HttpMethod method){
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url);
+        HttpEntity<String> entity = new HttpEntity<>(body,header);
+        ResponseEntity<String> response = testRestTemplate.
+                exchange(builder.buildAndExpand(pathParam).toUri(),method,entity,String.class);
+        return response;
+    }
+
+    @Test
+    public void getUserTest(){
+        String url = "http://localhost:"+port+"/api/users/{id}";
+        Map<String,String> pathVariable = new HashMap<>();
+        pathVariable.put("id","1");
+
+        HttpEntity<String> entity = new HttpEntity<>(null,null);
+        UriComponentsBuilder builder = UriComponentsBuilder.fromUriString(url);
+
+        ResponseEntity<String> response = testRestTemplate.
+                exchange(builder.buildAndExpand(pathVariable).toUri(), HttpMethod.GET,entity,String.class);
+        System.out.println(response.getBody());
+        assertEquals(HttpStatus.OK,response.getStatusCode());
+    }
+
+    @Test
+    public void addUserTest(){
+        String url = "http://localhost:"+port+"/api/users";
+        String body = "{\n" +
+                "    \"name\":\"Poonam\",\n" +
+                "    \"password\":\"PooNamC&234\"\n" +
+                "}";
+        MultiValueMap<String,String> headers = new LinkedMultiValueMap<>();
+        List<String> al = new ArrayList<>();
+        al.add("application/json");
+        headers.put("Content-Type",al);
+        Map<String,String> pathParam = new HashMap<>();
+
+        ResponseEntity<String> response= doRestCall(url,null,pathParam,body,headers,HttpMethod.POST);
+        assertEquals(HttpStatus.OK,response.getStatusCode());
     }
 
 }
