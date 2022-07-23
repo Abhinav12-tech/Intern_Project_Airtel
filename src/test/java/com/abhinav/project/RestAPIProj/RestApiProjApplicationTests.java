@@ -29,6 +29,7 @@ import java.util.stream.Stream;
 import static org.mockito.Mockito.when;
 import static org.junit.Assert.assertEquals;
 
+//Test Class to validate Unit & E2E Test Cases
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class RestApiProjApplicationTests {
@@ -45,6 +46,7 @@ class RestApiProjApplicationTests {
     @MockBean
     private UserRepository repository;
 
+    //Unit Test Case to validate presence of users in Database
     @Test
     public void getAllUsersTest(){
         when(repository.findAll()).thenReturn(Stream.
@@ -53,6 +55,7 @@ class RestApiProjApplicationTests {
         assertEquals(2, controller.getAllUsers().size());
     }
 
+    //Unit Test Case to validate successful creation of a user in Database
     @Test
     public void createUserTest(){
         User user = new User("Prateek", "ApsDK#2022");
@@ -60,6 +63,7 @@ class RestApiProjApplicationTests {
         assertEquals(user,controller.createUser(user));
     }
 
+    //Unit Test Case to validate encryption of password & addition of user in Database
     @Test
     public void insertData(){
         User user = new User();
@@ -69,6 +73,7 @@ class RestApiProjApplicationTests {
         repository.save(user);
     }
 
+    //E2E Test Function to validate Rest Calls
     public ResponseEntity<String> doRestCall(String url, MultiValueMap<String,String> queryParam,
                                              Map<String,String> pathParam,String body,
                                              MultiValueMap<String,String> header,HttpMethod method){
@@ -80,6 +85,7 @@ class RestApiProjApplicationTests {
         return response;
     }
 
+    //E2E Test Case to validate Rest Call to getUser API
     @Test
     public void getUserTest(){
         String url = "http://localhost:"+port+"/api/users/{id}";
@@ -95,6 +101,7 @@ class RestApiProjApplicationTests {
         assertEquals(HttpStatus.OK,response.getStatusCode());
     }
 
+    //E2E Test Case to validate successful addition of user to Database
     @Test
     public void addUserTest(){
         String url = "http://localhost:"+port+"/api/users";

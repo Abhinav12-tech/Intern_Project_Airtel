@@ -8,9 +8,11 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
 
+//Global Class to handle Specific as well as General Exceptions to return customized output
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+    //Function to handle ResourceNotFoundException
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> handleResourceNotFoundException
                     (ResourceNotFoundException exception, WebRequest request){
@@ -18,6 +20,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity(errorDetails, HttpStatus.NOT_FOUND);
     }
 
+    //Function to handle APIException
     @ExceptionHandler(APIException.class)
     public ResponseEntity<?> handleAPIException
             (APIException exception, WebRequest request){
@@ -25,6 +28,7 @@ public class GlobalExceptionHandler {
         return new ResponseEntity(errorDetails, HttpStatus.NOT_FOUND);
     }
 
+    //Function to handle every(Global) Exception
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleGlobalException
             (Exception exception, WebRequest request){

@@ -15,6 +15,7 @@ import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+//Encryption class to store encrypted value of field "Password" into Database
 @Configuration
 public class AesEncryptor implements AttributeConverter<Object, String> {
 
@@ -25,22 +26,26 @@ public class AesEncryptor implements AttributeConverter<Object, String> {
     private Key key;
     private Cipher cipher;
 
+    //Function to get value of "Password" to encrypt
     private Key getKey() {
         if (key == null)
             key = new SecretKeySpec(encryptionKey.getBytes(), encryptionCipher);
         return key;
     }
 
+    //Function to get value of encrypted "Password" to decrypt
     private Cipher getCipher() throws GeneralSecurityException {
         if (cipher == null)
             cipher = Cipher.getInstance(encryptionCipher);
         return cipher;
     }
 
+    //Init Method
     private void initCipher(int encryptMode) throws GeneralSecurityException {
         getCipher().init(encryptMode, getKey());
     }
 
+    //Function to encrypt value of "Password" and insert into Database
     @SneakyThrows
     @Override
     public String convertToDatabaseColumn(Object attribute) {
@@ -51,6 +56,7 @@ public class AesEncryptor implements AttributeConverter<Object, String> {
         return Base64.getEncoder().encodeToString(getCipher().doFinal(bytes));
     }
 
+    //Function to fetch encrypted "Password" value from Database and decrypt
     @SneakyThrows
     @Override
     public Object convertToEntityAttribute(String dbData) {
