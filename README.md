@@ -75,4 +75,10 @@ After that, head to [http://localhost:8080/api/users](http://localhost:8080/api/
   
   The MySQL Table Structure is as follows - 
   ![createNewRecord1](./Assets/PostSQL.jpg)
-  
+
+2. `General GET Method`
+- URL: http://localhost:8080/api/users
+- HTTP Method: GET
+![GetMethod](./Assets/GetMethod.jpg)
+(Returns List of all users present in Database.)
+
