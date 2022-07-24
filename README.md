@@ -82,3 +82,39 @@ After that, head to [http://localhost:8080/api/users](http://localhost:8080/api/
 ![GetMethod](./Assets/GetMethod.jpg)
 (Returns List of all users present in Database.)
 
+3. `Get User by ID`
+- URL: http://localhost:8080/api/users/{id} 
+- HTTP Method: GET
+  ![getUserbyID](./Assets/GetIdMethod.jpg)
+
+4. `Update User`
+- URL: http://localhost:8080/api/users/{id}
+- HTTP Method: PUT
+- Body:
+  ````json
+  {
+    "id":43
+    "name": "Aniruddh Chauhan",
+    "password": "AnicHau%34"
+  }
+  ````
+  ![updateUser](./Assets/PutMethod.jpg)
+
+  The updated value is reflected in the MySQL Database when we reload it -
+  ![updateUser1](./Assets/PutSQL.jpg)
+  
+4. `Delete User`
+- URL: http://127.0.0.1:8080/api/v1/apps/{id}
+- HTTP Method: DELETE
+  ![deleteUser](./Assets/DeleteMethod.jpg)
+  
+  If we try to look up the deleted user by id we will get an HTTP 404 status code with custom exception handling response:
+  ![deleteUser1](./Assets/DeleteSearch.jpg)
+
+## Unit Test
+Unit tests are a must for any business application, regardless of its complexity and size. Therefore, to demonstrate some of the functionality from the combination of **JUnit 5** + **Mockito**, some **Unit** and **Integration** tests were implemented. You can check them by going to the [📁 test](./src/test/java/com/abhinav/project/RestAPIProj) folder. To execute the tests, from the project root, run:
+````bash
+$ mvn test
+````
+
+## Thank You
