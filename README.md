@@ -29,6 +29,7 @@ The following are the base folders in which the project is organized and the pur
 ## Libraries and Dependencies
 - [Spring Web](https://docs.spring.io/spring-framework/docs/current/reference/html/web.html)
 - [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+- [Spring MVC (Tomcat)](https://docs.spring.io/spring-framework/docs/3.2.x/spring-framework-reference/html/mvc.html)
 - [JUnit 5](https://junit.org/junit5/)
 - [Mockito](https://site.mockito.org/)
 - [Spring Validation](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation)
@@ -36,9 +37,42 @@ The following are the base folders in which the project is organized and the pur
 - [MySQL Database](https://docs.oracle.com/en-us/iaas/mysql-database/doc/getting-started.html)
 - [Lombok](https://projectlombok.org/)
 
+## Database configuration 
+Create a MySQL database with the name `usersDB` and add the credentials to `/resources/application.properties`. 
+The MySQL code looks like this -
+<code> create database usersDB;
+use usersDB; </code>
+
+The default code for [application.properties](src/main/resources/application.properties) is :
+
+```
+spring.datasource.url = jdbc:mysql://localhost:3306/usersDB?useSSL=false
+spring.datasource.username = root
+spring.datasource.password = 
+spring.jpa.properties.hibernate.dialect = org.hibernate.dialect.MySQL5InnoDBDialect
+spring.jpa.hibernate.ddl-auto = update
+```
+
 ## Booting Up the Application
 A maven project can be setup in your favorite IDE by multiple ways. Two of them are mentioned below -
 1. Using Command Line: <code>mvn spring-boot:run</code>
-2. OR Navigate to [📁 application](src/main/java/com/abhinav/project/RestAPIProj) and simply right-click and run the file annotated with `@SpringBootApplication`.
+2. OR Navigate to [src/main](src/main/java/com/abhinav/project/RestAPIProj) and simply right-click and run the file annotated with `@SpringBootApplication`.
+
+After that, head to [http://localhost:8080/api/users](http://localhost:8080/api/users) on your browser or [Postman](https://www.postman.com/) to test the API.
 
 ## Testing
+1. `Create New Record`
+- URL: http://localhost:8080/api/users
+- HTTP Method: POST
+- Body:
+  ````json
+  {
+    "name": "Abhinav Chaudhary",
+    "password": "AbHi@1912",
+  }
+  ````
+  ![createNewRecord](./Assets/PostMethod.jpg)
+  
+  The MySQL Table Structure is as follows - 
+  ![createNewRecord1](./Assets/PostSQL.jpg)
+  
