@@ -64,6 +64,9 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<version>${parent.version}</version>
+				<configuration>
+					<finalName>airtel-intern-proj</finalName>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
