@@ -104,7 +104,7 @@ After that, head to [http://localhost:8080/api/users](http://localhost:8080/api/
   ![updateUser1](./Assets/PutSQL.jpg)
   
 4. `Delete User`
-- URL: http://127.0.0.1:8080/api/v1/apps/{id}
+- URL: http://localhost:8080/api/users/{id}
 - HTTP Method: DELETE
   ![deleteUser](./Assets/DeleteMethod.jpg)
   
@@ -148,9 +148,9 @@ spring.datasource.password =
 ```
   
 - Open the Dockerfile. Run the **"mvn clean install"** command to create an **executable** .jar file of the Application under the **target** folder.
+- Inside the **Dockerfile**, provide the name of the .jar file that was created in your IDE.
 
   ![docker6](./Assets/docker6.jpg)
-- Uncomment the code in the **Dockerfile** and provide the name of the .jar file that was created in your IDE.
 - Open local terminal in your IDE and run the command - <code>docker build -t springbootmysql .</code> Be sure to include the "dot". This creates a container of the Springboot Application.
 
   ![docker7](./Assets/docker7.jpg)
@@ -172,3 +172,5 @@ docker run --network springboot-mysql-net --name springboot-container -p 8080:80
 - Go back to the command prompt and again run <code>select * from users;</code>. The data is existing in the table with the user name and the encrypted password, like we wanted.
 
   ![docker12](./Assets/docker12.jpg)
+
+## Thank You
