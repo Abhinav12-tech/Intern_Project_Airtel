@@ -120,16 +120,25 @@ $ mvn test
 ## Dockerization of the Application
 Before beginning dockerization :
 - Comment out the [Test .java](./src/test/java/com/abhinav/project/RestAPIProj/RestApiProjApplicationTests.java) file since it interferes with functioning of the Springboot Container.
-- Run the **mvn clean install** commmand to create an **executable** .jar file of the Application under the **target** folder.
 
 Now, to dockerlize the Spring Boot Application with the MySQL Database :-
 - Create a MySQL docker image using
   <code>docker pull mysql</code> in the command prompt **(Win + R)**.
+  
+  ![docker1](./Assets/docker1.jpg)
 - Create a docker network for communication between the Application and Database using
   <code>docker network create springboot-mysql-net</code>.
+  
+  ![docker2](./Assets/docker2.jpg)
 - Run the MySQL container in the network - <code>docker run --name mysqldb --network springboot-mysql-net -e MYSQL_ROOT_PASSWORD=___ -e MYSQL_DATABASE=users -e MYSQL_USER=____ -e MYSQL_PASSWORD=____ -d mysql:5.6</code>
+
+  ![docker3](./Assets/docker3.jpg)
 - Check the database by entering the bash and giving various MySQL commands as given in the snippet below :-
+
+  ![docker4](./Assets/docker4.jpg)
 - As in below snippet, our **"users"** database exists inside the container but it has no data as of now.
+
+  ![docker5](./Assets/docker5.jpg)
 - Open the [application.properties](./src/main/resources/application.properties) file and uncomment the code mentioned below (provide username and password entered while creating the docker network):
 
 ```
@@ -137,16 +146,29 @@ spring.datasource.url = jdbc:mysql://mysqldb:3306/users
 spring.datasource.username = 
 spring.datasource.password = 
 ```
+  
+- Open the Dockerfile. Run the **"mvn clean install"** command to create an **executable** .jar file of the Application under the **target** folder.
 
-- Then, run the **"mvn clean install"** commmand to create an **executable** .jar file of the Application under the **target** folder.
+  ![docker6](./Assets/docker6.jpg)
 - Uncomment the code in the **Dockerfile** and provide the name of the .jar file that was created in your IDE.
 - Open local terminal in your IDE and run the command - <code>docker build -t springbootmysql .</code> Be sure to include the "dot". This creates a container of the Springboot Application.
+
+  ![docker7](./Assets/docker7.jpg)
 - Start the Springboot Container in the same network as before :
 ```
 docker run --network springboot-mysql-net --name springboot-container -p 8080:8080 -d springbootmysql
 ```
 
+  ![docker8](./Assets/docker8.jpg)
 - Open the logs of the Springboot Container. It shows that the container is successfully running on a Tomcat server.
+
+  ![docker9](./Assets/docker9.jpg)
 - Go back to the command prompt and run <code>show tables;</code> to see that our **"users"** table is successfully generated inside the database exisiting inside the container. The table is empty as of now.
+
+  ![docker10](./Assets/docker10.jpg)
 - Fire up [Postman](https://www.postman.com/) and send a **POST** request by providing sample data.
+
+  ![docker11](./Assets/docker11.jpg)
 - Go back to the command prompt and again run <code>select * from users;</code>. The data is existing in the table with the user name and the encrypted password, like we wanted.
+
+  ![docker12](./Assets/docker12.jpg)
